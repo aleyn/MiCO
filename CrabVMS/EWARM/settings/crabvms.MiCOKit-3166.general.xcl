@@ -1,0 +1,15 @@
+"C:\IAR\ARM\v7502\arm\bin\armproc.dll" 
+
+"C:\IAR\ARM\v7502\arm\bin\armjlink2.dll" 
+
+"Q:\WiseLeg\MiCO\v3.0.1\CrabVMS\Bin\crabvms.out" 
+
+--plugin "C:\IAR\ARM\v7502\arm\bin\armbat.dll" 
+
+--device_macro "C:\IAR\ARM\v7502\arm\config\debugger\ST\STM32F4xx.dmac" 
+
+--flash_loader "C:\IAR\ARM\v7502\arm\config\flashloader\ST\FlashSTM32F412xG.board" 
+
+
+
+
