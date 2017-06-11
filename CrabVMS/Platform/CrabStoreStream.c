@@ -432,7 +432,7 @@ CrabUint CrabStoreStream_WriteFlash(TCrabStreamDevice Device, CrabPoint Buffer, 
 ********************************************************************************/
 CrabUint CrabStoreStream_ReadEEprom(TCrabStreamDevice Device, CrabPoint Buffer, CrabUint Count)
 {
-  if (Device != CrabStream_InvaildDevice)
+  /*if (Device != CrabStream_InvaildDevice)
   {
     CrabStoreInfo StoreInfo = (CrabStoreInfo)Device;
     CrabUint  Addr;
@@ -456,7 +456,7 @@ CrabUint CrabStoreStream_ReadEEprom(TCrabStreamDevice Device, CrabPoint Buffer, 
       return CrabStream_Error;
     }
   }
-  else
+  else*/
   {
     return CrabStream_Error;
   }
@@ -473,7 +473,7 @@ CrabUint CrabStoreStream_ReadEEprom(TCrabStreamDevice Device, CrabPoint Buffer, 
 ********************************************************************************/
 CrabUint CrabStoreStream_WriteEEprom(TCrabStreamDevice Device, CrabPoint Buffer, CrabUint Count)
 {
-  if (Device != CrabStream_InvaildDevice)
+  /*if (Device != CrabStream_InvaildDevice)
   {
     CrabStoreInfo StoreInfo = (CrabStoreInfo)Device;
     CrabUint  Addr;
@@ -496,7 +496,7 @@ CrabUint CrabStoreStream_WriteEEprom(TCrabStreamDevice Device, CrabPoint Buffer,
       return CrabStream_Error;
     }
   }
-  else
+  else*/
   {
     return CrabStream_Error;
   }

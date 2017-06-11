@@ -1,0 +1,32 @@
+/*========================================
+  响应3166板上的第一个按键[F1]，
+  并以第二个LED灯闪亮提示。
+========================================*/
+import EMW3166;
+
+//当使用按下F1按键的时候，将会进入下面的事件函数
+//事件函数：OnKey1         这个函数名是可选的。
+//事件标志：KEY_PRESS_F1   每一种事件都有自己惟一的标志
+event OnKey1 : KEY_PRESS_F1
+{
+  board.LED2 = LED_RED;
+  Delay(500);              //这里延时500毫秒，仅仅是为了看清LED是否已经点亮
+  board.LED2 = LED_OFF;
+}
+
+main
+{
+  //显示欢迎词
+  PrintLn('=== Key Event Demo ===');
+
+  //打开事件驱动机制
+  OpenEvent();  
+  
+  repeat
+  {
+  }
+  until error;
+  
+  //关闭事件驱动机制
+  CloseEvent();  
+}

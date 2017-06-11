@@ -1,0 +1,152 @@
+/*========================================
+    CrabIO UDP 示例
+    Module: MiCO 3166
+========================================*/
+import EMW3166;
+
+void Welcome()
+{  
+  PrintLn('============ Crab for MiCO ===============');
+  PrintLn('= Power by Crab SDK 2.0 / MiCO SDK 3.2.2 =');
+  PrintLn('= Program by aleyn.wu   / MXCHIP         =');
+  PrintLn('= Support EMW3166, EMW3239               =');
+  PrintLn('=                                        =');
+  PrintLn('= UDP Unicast Demo                       =');
+  PrintLn('==========================================');
+}
+
+//事件：当用户按下F1按键的时候
+event OnKey1 : KEY_PRESS_F1
+{
+  boolean Active;
+
+  board.LED1 = LED_RED;
+  PrintLn("Connect to Wifi Router...");
+
+  //连接到WIFI上，SSID，密码
+  Net.Connect("WU-FAMILY","123456");
+
+  //获取连接状态
+  Active = Net.LinkStatus();
+  if (Active)
+  {
+    PrintLn ("Connect Success.");
+  }
+  else
+  {
+    PrintLn("Connect Faild.");
+  }
+
+  board.LED1 = LED_OFF;
+}
+
+//事件：当用户按下F2按键的时候
+event OnKey2 : KEY_PRESS_F2
+{
+  string[] Info;
+  string   Line;
+
+  board.LED1 = LED_RED;
+
+  //获取网络信息
+  Info = Net.Info(true);
+  
+  //逐行打印信息
+  foreach (Line in Info)
+  {
+    PrintLn(Line);
+  }
+
+  board.LED1 = LED_OFF;
+}
+
+//事件：当用户按下F3按键的时候
+event OnKey3 : KEY_PRESS_F3
+{
+  //UDP端口
+  const Unicast_port = 20000;
+
+  board.LED1 = LED_RED;
+  
+  //判断当前UDP状态，如果已经连接，则
+  if (Net.Udp.Status())
+  {
+    //关闭UDP 
+    if (Net.Udp.Close())
+    {
+      PrintLn("Close Udp success.");
+    }
+    else
+    {
+      PrintLn("Close Udp faild.");
+    }
+  }
+  else
+  {
+    //开启UDP
+    if (Net.Udp.Open(Unicast_port))
+    {
+      PrintLn("Open Udp@" # Unicast_port # " success.");
+    }
+    else
+    {
+      PrintLn("Open Udp@" # Unicast_port # " faild.");
+    }
+  }
+  board.LED1 = LED_OFF;
+}
+
+//事件：当用户按下F4按键的时候
+event OnKey4 : KEY_PRESS_F4
+{
+  board.LED1 = LED_RED;
+
+  //发送字符串到UDP端口
+  Net.Udp.Send("UDP Test from me."); 
+  
+  board.LED1 = LED_OFF;
+}
+
+//事件：当UDP有信息到达的时候
+event OnUdpReceive: NET_UDP_RECEIVE
+{
+  string Text;
+  string RemoteIP;
+  uint   RemotePort;
+
+  board.LED1 = LED_BLUE;
+
+  //接收信息
+  Text = Net.Udp.Receive();
+
+  //获取发送者的IP地址
+  RemoteIP = Net.Udp.RemoteIP();
+
+  //获取发送者的端口
+  RemotePort = Net.Udp.RemotePort();  
+
+  //打印前面三个信息
+  PrintLn(RemoteIP # ':' # RemotePort # ' => ' # Text);
+
+  //发送当前的旋钮刻度值给刚才那个发送者
+  Net.Udp.Send("TWIST: " # Board.TWIST # \r\n);
+
+  board.LED1 = LED_OFF;
+}
+
+main
+{
+  Welcome();
+
+  //打开事件驱动机制
+  OpenEvent();
+
+  repeat
+  {
+  }
+  until error;
+
+  //关闭事件驱动机制
+  CloseEvent();
+}
+

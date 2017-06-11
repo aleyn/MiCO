@@ -1,0 +1,88 @@
+;Generate by CrabScript v3.0
+{$Float = (8, 3)}
+{$MSec = 2}
+{$Hex = 1}
+{$Extern = 37}
+{$Event = 0}
+::@CRABSCRIPT::
+{$N '@CRABSCRIPT', 'G', 1}
+{$V 'Error', $000000, 'E', 4, 0}
+  CRAB
+  VAR  #G, 0
+  MOV  #T, #G
+{$A True}
+  JMP  <main>
+;Q:\WiseArm\CrabScript-´ó½ÅÐ·ÒýÇæ\CrabDesign-v2.0\Release\Imports\System.crab;Generate by CrabScript v3.0
+;Compile Mode: 3
+;Q:\WiseLeg\MiCO\v3.2.3\CrabVMS_v2.0\Demo\EX01_HelloWorld.crab;Generate by CrabScript v3.0
+;Compile Mode: 3
+;main
+{$D 277, 281}
+::main::
+{$N 'main', 'P', 0}
+{$N 'main', 'L', 0}
+  FUNC <main>
+  VAR  #P, 0
+  VAR  #L, 0
+{$A True}
+;Print('Hello World')
+{$D 288, 308}
+  VAR  #F, 5
+  TYPE #W, (S:01)
+  ADDR #D, <@DATA.1> ;'Hello World'
+  READ #V, #W, #D
+  BASE #M, #F
+  SEEK #M, $0001 ;Text
+  TYPE #W, (S:04)
+  SAVE #M, #W, #V ;Print[1]:Text
+  TYPE #W, (V:01)
+  CAPI [&000003] ;Print
+::main.1.Text::
+  BASE #M, #F
+  SEEK #M, $0001 ;Text
+  TYPE #W, (S:04)
+  DEL  #M, #W
+  FREE #F
+{$D 311, 312}
+::main.@::
+{$A False}
+  INTR $0000
+  FREE #L
+  FREE #P
+  JMP  <@CRABSCRIPT.@>
+::@CRABSCRIPT.@::
+  FREE #G
+  QUIT
+;Q:\WiseArm\CrabScript-´ó½ÅÐ·ÒýÇæ\CrabDesign-v2.0\Release\Imports\System.crab::@APILIST.1::
+  API [&000001], 'Infomation'
+  API [&000002], 'Input'
+  API [&000003], 'Print'
+  API [&000004], 'Delay'
+  API [&000005], 'Format'
+  API [&000006], 'PrintLn'
+  API [&000010], 'getIntAbs'
+  API [&000011], 'IntToString'
+  API [&000012], 'getDatetimeYear'
+  API [&000013], 'setDatetimeYear'
+  API [&000014], 'getDatetimeMonth'
+  API [&000015], 'setDatetimeMonth'
+  API [&000016], 'getDatetimeDay'
+  API [&000017], 'setDatetimeDay'
+  API [&000018], 'getDatetimeWeek'
+  API [&000019], 'setDatetimeWeek'
+  API [&00001A], 'getDatetimeHour'
+  API [&00001B], 'setDatetimeHour'
+  API [&00001C], 'getDatetimeMin'
+  API [&00001D], 'setDatetimeMin'
+  API [&00001E], 'getDatetimeSec'
+  API [&00001F], 'setDatetimeSec'
+  API [&000020], 'getDatetimeMSec'
+  API [&000021], 'setDatetimeMSec'
+  API [&000022], 'getDatetimeDate'
+  API [&000023], 'setDatetimeDate'
+  API [&000024], 'getDatetimeTime'
+  API [&000025], 'setDatetimeTime'
+;Q:\WiseLeg\MiCO\v3.2.3\CrabVMS_v2.0\Demo\EX01_HelloWorld.crab::@DATA.1::
+  DATA 'Hello World'
+::@CRABSCRIPT@::
+  END

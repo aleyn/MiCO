@@ -1,0 +1,22 @@
+/*========================================
+  让3166板上的第一个LED灯交替闪亮
+========================================*/
+import EMW3166;
+
+main
+{
+  //显示欢迎词
+  PrintLn('=== LED Flash Demo ===');
+
+  repeat
+  {
+    Board.LED1 = LED_BLUE;  // 点亮左边的LED为蓝色
+    Delay(500);             // 延时500毫秒
+    Board.LED1 = LED_OFF;   // 关闭LED灯
+    Delay(500);             // 延时500毫秒
+    Board.LED1 = LED_RED;   // 点亮左边的LED为红色
+    Delay(500);             // 延时500毫秒
+    Board.LED1 = LED_OFF;   // 关闭LED灯
+    Delay(500);             // 延时500毫秒
+  } until error;
+}

@@ -1,0 +1,194 @@
+/*========================================
+  EMW3166.crab
+                        write by aleyn.wu
+
+  Mico EMW3166 Support Interface.
+
+  please don't modify this file.
+
+  Create Date: 2016-11-15
+  Last Update: 2017-04-25
+========================================*/
+import System;
+
+const  LED_OFF   = 0;  //LED关闭
+const  LED_ON    = 1;  //LED点亮
+const  LED_BLUE  = 1;  //LED点亮：蓝色
+const  LED_RED   = 2;  //LED点亮：红色
+
+const  RETY_OFF  = 0;  //继电器断开
+const  RETY_ON   = 1;  //继电器闭合
+
+const  KEY_PRESS     = 0x01000000;
+const  KEY_PRESS_F1  = KEY_PRESS + 0x21;
+const  KEY_PRESS_F2  = KEY_PRESS + 0x20;
+const  KEY_PRESS_F3  = KEY_PRESS + 0x11;
+const  KEY_PRESS_F4  = KEY_PRESS + 0x10;
+
+const  NET_COMMAND     = 0x10000000;
+const  NET_TCP_MESSAGE = NET_COMMAND + 0x00100000;
+const  NET_UDP_MESSAGE = NET_COMMAND + 0x00200000;
+const  NET_UDP_SEND    = NET_UDP_MESSAGE + 0x00010000;
+const  NET_UDP_RECEIVE = NET_UDP_MESSAGE + 0x00020000;
+
+//取得帮助信息列表
+extern string[] Help();
+
+//基础硬件
+interface Board
+{
+  //按键输入
+  property ushort Key     { get : 'getKey';}
+
+  //其它输入
+  property ushort Input   { get : 'getInput';}
+
+  //LED1显示
+  property byte LED1      { set : 'setLED'; index:1;}
+
+  //LED2显示
+  property byte LED2      { set : 'setLED'; index:2;}
+
+  //旋扭输入 0 - 100
+  property ushort  TWIST  { get: 'getSensor'; index:1;}
+
+  //光照传感器 0 -100
+  property ushort  LIGHT  { get: 'getSensor'; index:2;}
+
+  //RETY继电器开关
+  property byte RETY      { set : 'setGPIO'; index:1;}
+
+  //蜂鸣器开关
+  //Width:鸣叫时间间隔，单位毫秒，以50毫秒为一个阶梯
+  //Count:鸣叫次数
+  extern void Beep(byte Width, byte Count);  
+}
+
+interface Board::ADC
+{
+  //ADC1输入
+  property uint  A1    { get: 'getADC'; index:1;}
+
+  //ADC2输入
+  property uint  A2    { get: 'getADC'; index:2;}  
+}
+
+
+//通用IO控制
+interface Board::GPIO
+{
+  default extern {get:'getGPIO'; set:'setGPIO';}
+
+  property byte P1 {get; set; index: 1;}
+  property byte P2 {get; set; index: 2;}
+  property byte P3 {get; set; index: 3;}
+  property byte P4 {get; set; index: 4;}
+  property byte P5 {get; set; index: 5;}
+  property byte P6 {get; set; index: 6;}
+  property byte P7 {get; set; index: 7;}
+  property byte P8 {get; set; index: 8;}
+  property byte P9 {get; set; index: 9;}
+  property byte P10 {get; set; index: 10;}
+  property byte P11 {get; set; index: 11;}
+  property byte P12 {get; set; index: 12;}
+  property byte P13 {get; set; index: 13;}
+  property byte P14 {get; set; index: 14;}
+  property byte P15 {get; set; index: 15;}
+  property byte P16 {get; set; index: 16;}
+}
+
+//马达1 接口定义
+interface Motor1
+{
+  //开关: true = 打开, false = 关闭
+  property boolean Active {get : 'getMotorActive'; set : 'setMotorActive'; index: 0x10;}
+
+  //速度: 0 - 100
+  property uint Speed {get : 'getMotorSpeed'; set : 'setMotorSpeed'; index: 0x11;}
+
+  //频率: 0 - 100000
+  property uint Frequ {get : 'getMotorFrequ'; set : 'setMotorFrequ'; index: 0x12;}
+
+  //极性: 0 = 正向, 1 = 反向
+  property byte Polar {get : 'getMotorPolar'; set : 'setMotorPolar'; index: 0x13;}
+}
+
+interface Net
+{
+  //扫描WIFI
+  //extern string[] NetScan();
+  extern void Scan() : 'NetScan';
+
+  //连接到WIFI
+  //SSID:WIFI连接点
+  //Password:连接密码
+  //返回:true - 已经连接, false - 连接失败
+  extern boolean Connect(string SSID, string Password) : 'NetConnect';
+
+  //建立WIFI接入点
+  //返回:true - 建立成功, false - 建立失败
+  extern boolean SoftAP(string SSID, string Password) : 'NetSoftAP';
+
+  //取得网络信息
+  //AddCaption: 每种信息内容前面加上标题
+  //返回:信息列表，需要独行读出
+  extern string[] Info(boolean AddCaption) : 'NetInfo';
+
+  //取得连接信息
+  //返回:true - 已经连接, false - 没有连接
+  extern boolean LinkStatus() : 'NetLinkStatus';
+
+  //域名转为IP地址
+  //Domain:域名
+  //返回:IP地址
+  extern string GetDns(string Domain) : 'NetGetDns';
+
+  //获取本机IP地址
+  //返回:IP地址
+  extern string LocalIP() : 'NetLocalIP';
+
+}
+
+interface Net::Util
+{
+  //获取时间服务器数据
+  //Domain:域名
+  //DateOffset:日期偏移值，一般为0
+  //TimeOffset:时间偏移值，比如中国是 +8
+  //返回:日期时间值，表示时间服务器当前时间
+  extern datetime ServerDatetime(string Domain, int DateOffset, int TimeOffset)  : 'NetServerDatetime';
+}
+
+interface Net::Udp
+{
+  //建立UDP单播
+  //LocalPort:UDP端口，例如21314
+  //返回:true - 建立成功, false - 建立失败
+  extern boolean Open(uint LocalPort) : 'NetUdpOpen';
+
+  //关闭UDP单播
+  //返回:true - 关闭成功, false - 关闭失败
+  extern boolean Close() : 'NetUdpClose';
+
+  //获取UDP单播状态
+  //返回:true - 已经连接, false - 没有连接
+  extern boolean Status() : 'NetUdpStatus';
+
+  //获取UDP单播所接收的字符串
+  //返回:当前已接收的字符串
+  extern string Receive() : 'NetUdpReceive';
+
+  //发送字符串到UDP单播
+  //Text:所要发送的文本字符串
+  //返回:true - 发送成功, false - 发送失败
+  extern boolean Send(string Text) : 'NetUdpSend';
+
+  //获取UDP单播远端IP
+  //返回:IP地址
+  extern string RemoteIP() : 'NetUdpRemoteIP';
+
+  //获取UDP单播远端Port
+  //返回:端口
+  extern uint  RemotePort() : 'NetUdpRemotePort';
+}
+

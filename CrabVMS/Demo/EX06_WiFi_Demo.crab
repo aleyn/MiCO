@@ -1,0 +1,120 @@
+/*========================================
+    CrabIO wifi 示例
+    Module: MiCO 3166
+========================================*/
+import EMW3166;
+
+//显示欢迎信息
+void Welcome()
+{
+  PrintLn('============ Crab for MiCO ===============');
+  PrintLn('= Power by Crab SDK 2.0 / MiCO SDK 3.2.2 =');
+  PrintLn('= Program by aleyn.wu   / MXCHIP         =');
+  PrintLn('= Support EMW3166, EMW3239               =');
+  PrintLn('=                                        =');
+  PrintLn('= WIFI Demo                              =');
+  PrintLn('==========================================');
+}
+
+//事件：当用户按下F1按键的时候
+event OnKey1 : KEY_PRESS_F1
+{
+  boolean Active;
+
+  board.LED1 = LED_RED;
+  PrintLn("Connect to Wifi Router...");
+
+  //连接到WIFI上，SSID，密码
+  Net.Connect("WU-FAMILY","123456");
+
+  //获取连接状态
+  Active = Net.LinkStatus();
+
+  if (Active)
+  {
+    PrintLn ("Connect Success.");
+  }
+  else
+  {
+    PrintLn("Connect Faild.");
+  }
+
+  board.LED1 = LED_OFF;
+}
+
+//事件：当用户按下F2按键的时候
+event OnKey2 : KEY_PRESS_F2
+{
+  string[] Info;
+  string   Line;
+
+  board.LED1 = LED_RED;
+
+  //获取网络信息
+  Info = Net.Info(true);
+  
+  //逐行打印信息
+  foreach (Line in Info)
+  {
+    PrintLn(Line);
+  }
+
+  board.LED1 = LED_OFF;
+}
+
+//事件：当用户按下F3按键的时候
+event OnKey3 : KEY_PRESS_F3
+{
+  string IP;
+  string Domain = "ntp.shu.edu.cn";
+  board.LED1 = LED_RED;
+
+
+  PrintLn("Get DNS from " # Domain # "...");
+
+  //获取域名所对应的IP地下
+  IP = Net.GetDns(Domain);
+  
+  //如果IP地址有效，则打印出来
+  if (IP != null)
+  {
+    PrintLn(Domain # ' = ' # IP);
+  }
+  
+  board.LED1 = LED_OFF;
+}
+
+//事件：当用户按下F4按键的时候
+event OnKey4 : KEY_PRESS_F4
+{
+  datetime Now;
+  string Domain = "ntp.shu.edu.cn";  //"s2m.time.edu.cn";
+
+  board.LED1 = LED_RED;
+  PrintLn("Connect to " # Domain #", Please Wait.");
+
+  //获取时间服务器的当前时间
+  Now = Net.Util.ServerDatetime(Domain, 0 ,8);
+
+  //打印时间，前面是日期，后面是时间
+  PrintLn("Server Datetime: " # Now.Date # " " # Now.Time);
+  
+  board.LED1 = LED_OFF;
+}
+
+main
+{
+  Welcome();
+
+  //打开事件驱动机制
+  OpenEvent();
+
+  repeat
+  {
+  }
+  until error;
+
+  //关闭事件驱动机制
+  CloseEvent();
+}
+

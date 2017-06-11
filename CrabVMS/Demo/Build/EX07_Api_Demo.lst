@@ -1,0 +1,191 @@
+;Generate by CrabScript v3.0
+{$Float = (8, 3)}
+{$MSec = 2}
+{$Hex = 1}
+{$Extern = 70}
+{$Event = 0}
+::@CRABSCRIPT::
+{$N '@CRABSCRIPT', 'G', 1}
+{$V 'Error', $000000, 'E', 4, 0}
+  CRAB
+  VAR  #G, 0
+  MOV  #T, #G
+{$A True}
+  JMP  <main>
+;Q:\WiseArm\CrabScript-´ó½ÅÐ·ÒýÇæ\CrabDesign-v2.0\Release\Imports\System.crab;Generate by CrabScript v3.0
+;Compile Mode: 3
+;Q:\WiseLeg\MiCO\v3.2.3\CrabVMS_v2.0\Demo\EMW3166.crab;Generate by CrabScript v3.0
+;Compile Mode: 3
+;Q:\WiseLeg\MiCO\v3.2.3\CrabVMS_v2.0\Demo\EX07_Api_Demo.crab;Generate by CrabScript v3.0
+;Compile Mode: 3
+;main
+{$D 333, 337}
+::main::
+{$N 'main', 'P', 0}
+{$N 'main', 'L', 1}
+{$V 'Value1', $000000, 'N', 4, 0}
+  FUNC <main>
+  VAR  #P, 0
+  VAR  #L, 4
+{$A True}
+;PrintLn('=== Custom API Demo ===')
+{$D 360, 394}
+  VAR  #F, 5
+  TYPE #W, (S:01)
+  ADDR #D, <@DATA.1> ;'=== Custom API Demo ==='
+  READ #V, #W, #D
+  BASE #M, #F
+  SEEK #M, $0001 ;Text
+  TYPE #W, (S:04)
+  SAVE #M, #W, #V ;PrintLn[1]:Text
+  TYPE #W, (V:01)
+  CAPI [&000006] ;PrintLn
+::main.1.Text::
+  BASE #M, #F
+  SEEK #M, $0001 ;Text
+  TYPE #W, (S:04)
+  DEL  #M, #W
+  FREE #F
+;int Value1;
+{$D 401, 412}
+;Board.LED1 = LED_RED;
+{$D 418, 439}
+  GET  #Q, 2 ;LED_RED
+  TYPE #W, (U:01)
+  PORT #D, $0001 ;Board.LED1
+  EXTN #D, $0029 ;setLED
+  WPOR #D, #W, #Q
+;Value1 = MyAPIFunc(1,2);
+{$D 482, 506}
+  VAR  #F, 12
+  GET  #V, 1
+  BASE #M, #F
+  SEEK #M, $0004 ;Param1
+  TYPE #W, (N:04)
+  SAVE #M, #W, #V ;MyAPIFunc[1]:Param1
+  GET  #V, 2
+  BASE #M, #F
+  SEEK #M, $0008 ;Param2
+  TYPE #W, (N:04)
+  SAVE #M, #W, #V ;MyAPIFunc[2]:Param2
+  TYPE #W, (N:04)
+  CAPI [&000046] ;MyAPIFunc
+  BASE #M, #F
+  SEEK #M, $0000 ;Result
+  TYPE #W, (N:04)
+  LOAD #Q, #W, #M
+  FREE #F
+  BASE #M, #L
+  SEEK #M, $0000 ;Value1
+  TYPE #W, (N:04)
+  SAVE #M, #W, #Q
+;PrintLn("Result = " # Value1)
+{$D 528, 557}
+  VAR  #F, 5
+  TYPE #W, (S:01)
+  ADDR #D, <@DATA.2> ;"Result = "
+  READ #V, #W, #D
+  BASE #M, #L
+  SEEK #M, $0000 ;Value1
+  TYPE #W, (N:04)
+  LOAD #X, #W, #M
+  STRA #V, #X
+  BASE #M, #F
+  SEEK #M, $0001 ;Text
+  TYPE #W, (S:04)
+  SAVE #M, #W, #V ;PrintLn[1]:Text
+  TYPE #W, (V:01)
+  CAPI [&000006] ;PrintLn
+::main.4.Text::
+  BASE #M, #F
+  SEEK #M, $0001 ;Text
+  TYPE #W, (S:04)
+  DEL  #M, #W
+  FREE #F
+;Board.LED1 = LED_OFF;
+{$D 564, 585}
+  GET  #Q, 0 ;LED_OFF
+  TYPE #W, (U:01)
+  PORT #D, $0001 ;Board.LED1
+  EXTN #D, $0029 ;setLED
+  WPOR #D, #W, #Q
+{$D 587, 588}
+::main.@::
+{$A False}
+  INTR $0000
+  FREE #L
+  FREE #P
+  JMP  <@CRABSCRIPT.@>
+::@CRABSCRIPT.@::
+  FREE #G
+  QUIT
+;Q:\WiseArm\CrabScript-´ó½ÅÐ·ÒýÇæ\CrabDesign-v2.0\Release\Imports\System.crab::@APILIST.1::
+  API [&000001], 'Infomation'
+  API [&000002], 'Input'
+  API [&000003], 'Print'
+  API [&000004], 'Delay'
+  API [&000005], 'Format'
+  API [&000006], 'PrintLn'
+  API [&000010], 'getIntAbs'
+  API [&000011], 'IntToString'
+  API [&000012], 'getDatetimeYear'
+  API [&000013], 'setDatetimeYear'
+  API [&000014], 'getDatetimeMonth'
+  API [&000015], 'setDatetimeMonth'
+  API [&000016], 'getDatetimeDay'
+  API [&000017], 'setDatetimeDay'
+  API [&000018], 'getDatetimeWeek'
+  API [&000019], 'setDatetimeWeek'
+  API [&00001A], 'getDatetimeHour'
+  API [&00001B], 'setDatetimeHour'
+  API [&00001C], 'getDatetimeMin'
+  API [&00001D], 'setDatetimeMin'
+  API [&00001E], 'getDatetimeSec'
+  API [&00001F], 'setDatetimeSec'
+  API [&000020], 'getDatetimeMSec'
+  API [&000021], 'setDatetimeMSec'
+  API [&000022], 'getDatetimeDate'
+  API [&000023], 'setDatetimeDate'
+  API [&000024], 'getDatetimeTime'
+  API [&000025], 'setDatetimeTime'
+;Q:\WiseLeg\MiCO\v3.2.3\CrabVMS_v2.0\Demo\EMW3166.crab::@APILIST.2::
+  API [&000026], 'Help'
+  API [&000027], 'getKey'
+  API [&000028], 'getInput'
+  API [&000029], 'setLED'
+  API [&00002A], 'getSensor'
+  API [&00002B], 'setGPIO'
+  API [&00002C], 'Beep'
+  API [&00002D], 'getADC'
+  API [&00002E], 'getGPIO'
+  API [&00002F], 'getMotorActive'
+  API [&000030], 'setMotorActive'
+  API [&000031], 'getMotorSpeed'
+  API [&000032], 'setMotorSpeed'
+  API [&000033], 'getMotorFrequ'
+  API [&000034], 'setMotorFrequ'
+  API [&000035], 'getMotorPolar'
+  API [&000036], 'setMotorPolar'
+  API [&000037], 'NetScan'
+  API [&000038], 'NetConnect'
+  API [&000039], 'NetSoftAP'
+  API [&00003A], 'NetInfo'
+  API [&00003B], 'NetLinkStatus'
+  API [&00003C], 'NetGetDns'
+  API [&00003D], 'NetLocalIP'
+  API [&00003E], 'NetServerDatetime'
+  API [&00003F], 'NetUdpOpen'
+  API [&000040], 'NetUdpClose'
+  API [&000041], 'NetUdpStatus'
+  API [&000042], 'NetUdpReceive'
+  API [&000043], 'NetUdpSend'
+  API [&000044], 'NetUdpRemoteIP'
+  API [&000045], 'NetUdpRemotePort'
+;Q:\WiseLeg\MiCO\v3.2.3\CrabVMS_v2.0\Demo\EX07_Api_Demo.crab::@APILIST.3::
+  API [&000046], 'MyAPIFunc'
+::@DATA.1::
+  DATA '=== Custom API Demo ==='
+::@DATA.2::
+  DATA "Result = "
+::@CRABSCRIPT@::
+  END

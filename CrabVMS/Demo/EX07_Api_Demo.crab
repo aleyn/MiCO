@@ -1,0 +1,27 @@
+/*========================================
+  给EMW3166增加一个API函数
+========================================*/
+import EMW3166;
+
+//定义一个自定义API，并连接到驱动程序API层
+//Param1, Param2，这两个参数，会直接到达驱动程序API层
+//返回：驱动程序API层必须返回一个int值给用户程序
+extern int MyAPIFunc(int Param1, int Param2);
+
+main
+{
+  //显示欢迎词
+  PrintLn('=== Custom API Demo ===');
+
+  int Value1;
+
+  Board.LED1 = LED_RED;
+
+  //调用自定义API函数，并取得返回值
+  Value1 = MyAPIFunc(1,2);
+
+  //打印返回值
+  PrintLn("Result = " # Value1);
+
+  Board.LED1 = LED_OFF;
+}
