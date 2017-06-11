@@ -10,7 +10,7 @@
 4.MiCO SDK的具体使用方法，请向MiCO技术组资询。
 
 5.大脚蟹项目资源
-  项目网站：http://www.wisearm.com/crab
-  程序资源：https://github.com/aleyn/Crab
-  QQ群组：3603821
+- 项目网站：http://www.wisearm.com/crab
+- 程序资源：https://github.com/aleyn/Crab
+- QQ群组：3603821
 
